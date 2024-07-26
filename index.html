@@ -10,44 +10,37 @@
   </head>
 
   <body>
-    <a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false' renderer='antialias: true; alpha: true'>
-        <a-camera gps-new-camera='gpsMinDistance: 5'></a-camera>
-        <a-entity material='color: red' geometry='primitive: box' gps-new-entity-place="latitude: <your-lat>; longitude: <your-loon>" scale="10 10 10"></a-entity>
+<!--     <a-scene
+      vr-mode-ui="enabled: false"
+      arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;"
+    >
+      <a-text
+        value="This content will always face you."
+        look-at="[gps-camera]"
+        scale="20 20 20"
+        gps-entity-place="latitude: -26.1333794; longitude: 28.1066683;"
+      ></a-text>
+      <a-camera gps-camera rotation-reader> </a-camera>
+    </a-scene> -->
+    <a-scene
+        embedded
+        arjs="sourceType: webcam; debugUIEnabled: false;"
+        vr-mode-ui="enabled: false"
+        renderer="logarithmicDepthBuffer: true;"
+    >
+        <!-- Define the GPS Camera -->
+        <a-camera gps-camera rotation-reader></a-camera>
+
+        <!-- Place the GLB model at specific GPS coordinates -->
+        <a-entity
+            gps-entity-place="latitude: -26.1333794; longitude: 28.1066683"
+            gltf-model="url(./model.glb)"
+            scale="5 5 5"
+            rotation="0 180 0"
+        ></a-entity>
     </a-scene>
   </body>
-
-  <script>
-   window.onload = () => {
-    let downloaded = false;
-
-    const el = document.querySelector("[gps-new-camera]");
-
-    el.addEventListener("gps-camera-update-position", async(e) => {
-        if(!downloaded) {
-            const west = e.detail.position.longitude - 0.01,
-                  east = e.detail.position.longitude + 0.01,
-                  south = e.detail.position.latitude - 0.01;
-                  north = e.detail.position.latitude + 0.01;
-            const response = await fetch(`https://hikar.org/webapp/map?bbox=${west},${south},${east},${north}&layers=poi&outProj=4326`);
-            const pois = await response.json();
-            pois.features.forEach ( feature => {
-                const entity = document.createElement("a-box");
-                entity.setAttribute("scale", {
-                    x: 20, 
-                    y: 20,
-                    z: 20
-                });
-                entity.setAttribute('material', { color: 'red' } );
-                entity.setAttribute('gps-new-entity-place', {
-                    latitude: feature.geometry.coordinates[1],
-                    longitude: feature.geometry.coordinates[0]
-                }); 
-                document.querySelector("a-scene").appendChild(entity);
-            });
-        }
-        downloaded = true;
-    });
-};
-  </script>
 </html>
+
+
 
