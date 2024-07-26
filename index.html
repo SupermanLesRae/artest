@@ -10,7 +10,7 @@
   </head>
 
   <body>
-<!--     <a-scene
+     <a-scene
       vr-mode-ui="enabled: false"
       arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;"
     >
@@ -20,25 +20,14 @@
         scale="20 20 20"
         gps-entity-place="latitude: -26.1333794; longitude: 28.1066683;"
       ></a-text>
-      <a-camera gps-camera rotation-reader> </a-camera>
-    </a-scene> -->
-    <a-scene
-        embedded
-        arjs="sourceType: webcam; debugUIEnabled: false;"
-        vr-mode-ui="enabled: false"
-        renderer="logarithmicDepthBuffer: true;"
-    >
-        <!-- Define the GPS Camera -->
-        <a-camera gps-camera rotation-reader></a-camera>
-
-        <!-- Place the GLB model at specific GPS coordinates -->
-        <a-entity
+      <a-entity
             gps-entity-place="latitude: -26.1333794; longitude: 28.1066683"
             gltf-model="./model.glb"
             scale="5 5 5"
             rotation="0 180 0"
         ></a-entity>
-    </a-scene>
+      <a-camera gps-camera rotation-reader> </a-camera>
+    </a-scene> 
   </body>
 </html>
 
